@@ -1,6 +1,9 @@
 # BlogChain - A Decentralized Blogging Platform
 
 [![License](https://img.shields.io/github/license/Sn1F3rt/BlogChain)](LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Sn1F3rt/BlogChain)](/commits/main)
+[![GitHub issues](https://img.shields.io/github/issues/Sn1F3rt/BlogChain)](/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/Sn1F3rt/BlogChain)](/pulls)
 
 ## Table of Contents
 
