@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>BlogChain</title>
+    {% include "header.html" %}
+</head>
+
+<body class="light-theme">
+    <div class="container mt-5">
+        {% include "navbar.html" %}
+
+        <div class="row mt-5 mb-5">
+            {% if posts|length == 0 %}
+                    <div class="col-md-6 mx-auto">
+                        <div class="alert alert-info text-center" role="alert">
+                            No posts found.
+                        </div>
+                    </div>
+            {% endif %}
+
+            {% for post in posts %}
+                <div class="col-md-6">
+                    <div class="post-container">
+                        {% if post.author == current_user.username %}
+                            <a href="{{ url_for('posts._view', author=post.author, post_id=post.id) }}" title="View Post" class="btn btn-primary post-button-3"><i class="fa-solid fa-eye"></i></a>
+                            <a href="{{ url_for('posts._update', author=post.author, post_id=post.id) }}" title="Update Post" class="btn btn-secondary post-button-2"><i class="fa-solid fa-edit"></i></a>
+                            <a href="{{ url_for('posts._delete', author=post.author, post_id=post.id) }}" title="Delete Post" class="btn btn-danger post-button-1"><i class="fa-solid fa-trash"></i></a>
+                        {% else %}
+                            <a href="{{ url_for('posts._view', author=post.author, post_id=post.id) }}" title="View Post" class="btn btn-primary post-button-2"><i class="fa-solid fa-eye"></i></a>
+                            <a href="{{ url_for('tips._send', author=post.author, post_id=post.id) }}" title="Tip" class="btn btn-success post-button-1"><i class="fa-solid fa-sack-dollar"></i></a>
+                        {% endif %}
+                        <h2>{{ post.title }}</h2>
+                        {{ post.content|truncate  }}
+                        <br><br>
+                        <p>
+                            <strong>Author:</strong> {{ post.author }}
+                            <br>
+                            <strong>Date Posted:</strong> {{ post.created_at|format }}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% include "footer.html" %}
+
+    {% include "scripts.html" %}
+
+</body>
+
+</html>

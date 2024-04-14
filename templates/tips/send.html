@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Tip | BlogChain</title>
+    {% include "header.html" %}
+</head>
+
+<body class="light-theme">
+    <div class="container mt-5">
+        {% include "navbar.html" %}
+
+        <div class="container mb-5">
+            <div class="row mt-5">
+                <div class="col-md-3 mx-auto">
+                    <div class="alert alert-info text-center" role="alert">
+                        <strong>Author:</strong> {{ post.author }}
+                        <br>
+                        <strong>Post ID:</strong> {{ post.id }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-6 content-box low">
+                    <h4 class="card-title text-center">Give Tip</h4>
+                    <form onsubmit="tip(); return false;">
+                        {{ tip_form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ tip_form.sender.label(class="form-control-label") }}
+                            {{ tip_form.sender(class="form-control", id="sender", placeholder="Enter your address")}}
+                        </div>
+                        <div class="form-group">
+                            {{ tip_form.recipient.label(class="form-control-label") }}
+                            {{ tip_form.recipient(class="form-control", id="recipient", placeholder="Enter recipient address") }}
+                        </div>
+                        <div class="form-group">
+                            {{ tip_form.amount.label(class="form-control-label") }}
+                            {{ tip_form.amount(class="form-control", id="amount", placeholder="Enter amount (in ETH)") }}
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Tip!</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include "footer.html" %}
+
+    {% include "scripts.html" %}
+
+    <script>
+        const BACKEND_ADDR_TIPS = "http://localhost:5000/tips";
+
+        async function sendTransaction() {
+            const sender = document.getElementById("sender").value;
+            const recipient = document.getElementById("recipient").value;
+            const amount = document.getElementById("amount").value;
+            const post_id = "{{ post.id }}";
+
+            await provider
+                .request({
+                    method: "eth_sendTransaction",
+                    params: [
+                         {
+                            from: sender,
+                            to: recipient,
+                            value: Number(amount * 1e18).toString(16),
+                         }
+                    ]
+                })
+                .then((txHash) => {
+                    fetch(`${BACKEND_ADDR_TIPS}/record`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ sender, recipient, amount, post_id, txHash }),
+                    });
+
+                    new Noty({
+                        type: "success",
+                        theme: "bootstrap-v4",
+                        layout: "topCenter",
+                        text: "Tip sent.",
+                        timeout: 3000
+                    }).show();
+
+                    const sleep = ms => new Promise(r => setTimeout(r, ms));
+                    async function wait() {
+                        await sleep(3500);
+                    }
+
+                    wait().then(() =>
+                    {
+                        window.location.href = `/app`;
+                    });
+                })
+                .catch((err) => {
+                    if (err.code === 4001) {
+                        new Noty({
+                            type: "error",
+                            theme: "bootstrap-v4",
+                            layout: "topCenter",
+                            text: "Transaction rejected.",
+                            timeout: 3000
+                        }).show();
+                    } else {
+                        alert(err);
+                    }
+                });
+        }
+
+        async function tip() {
+            await connectWallet();
+            await sendTransaction();
+        }
+    </script>
+
+</body>
+
+</html>

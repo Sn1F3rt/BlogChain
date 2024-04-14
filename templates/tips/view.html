@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Tips | BlogChain</title>
+    {% include "header.html" %}
+</head>
+
+<body class="light-theme">
+    <div class="container mt-5 mb-5">
+        {% include "navbar.html" %}
+
+        <div class="mt-3 mb-5 text-center ">
+            <h1 class="mb-5">Transactions</h1>
+            <button type="button" class="btn btn-primary" id="sent-tips-btn">Sent Tips</button>
+            <button type="button" class="btn btn-primary" id="received-tips-btn">Received Tips</button>
+        </div>
+
+        <div class="table-responsive mt-4 text-center">
+            <table class="table table-bordered tips-table" id="sent-tips-table">
+                <thead>
+                    <tr>
+                        <th>Recipient</th>
+                        <th>Amount</th>
+                        <th>Post ID</th>
+                        <th>Transaction Hash</th>
+                    </tr>
+                </thead>
+                <tbody id="tips-body">
+                    {% if sent_tips|length == 0 %}
+                    <tr>
+                        <td colspan="4">No records found.</td>
+                    </tr>
+                    {% endif %}
+
+                    {% for tip in sent_tips %}
+                    <tr>
+                        <td>{{ tip.recipient }}</td>
+                        <td>{{ tip.amount }}</td>
+                        <td><a target="_blank" href="{{ url_for('posts._view', author=tip.recipient, post_id=tip.post_id) }}">{{ tip.post_id }}</a><button class="btn btn-secondary" onclick="navigator.clipboard.writeText('{{ tip.post_id }}')"><i class="fa-regular fa-copy"></i></button></td>
+                        <td><a target="_blank" href="https://etherscan.io/search?f=0&q={{ tip.tx_hash }}">{{ tip.tx_hash }}</a><button class="btn btn-secondary" onclick="navigator.clipboard.writeText('{{ tip.tx_hash }}')"><i class="fa-regular fa-copy"></i></button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class="table table-bordered tips-table" id="received-tips-table">
+                <thead>
+                    <tr>
+                        <th>Sender</th>
+                        <th>Amount</th>
+                        <th>Post ID</th>
+                        <th>Transaction Hash</th>
+                    </tr>
+                </thead>
+                <tbody id="tips-body">
+                    {% if received_tips|length == 0 %}
+                    <tr>
+                        <td colspan="4">No records found.</td>
+                    </tr>
+                    {% endif %}
+
+                    {% for tip in received_tips %}
+                    <tr>
+                        <td>{{ tip.sender }}</td>
+                        <td>{{ tip.amount }}</td>
+                        <td><a target="_blank" href="{{ url_for('posts._view', author=tip.recipient, post_id=tip.post_id) }}">{{ tip.post_id }}</a><button class="btn btn-secondary" onclick="navigator.clipboard.writeText('{{ tip.post_id }}')"><i class="fa-regular fa-copy"></i></button></td>
+                        <td><a target="_blank" href="https://etherscan.io/search?f=0&q={{ tip.tx_hash }}">{{ tip.tx_hash }}</a><button class="btn btn-secondary" onclick="navigator.clipboard.writeText('{{ tip.tx_hash }}')"><i class="fa-regular fa-copy"></i></button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% include "footer.html" %}
+
+    {% include "scripts.html" %}
+
+    <script>
+        $(document).ready(function () {
+            $("#received-tips-table").hide();
+
+            $("#sent-tips-btn").click(function () {
+                $("#sent-tips-table").show();
+                $("#received-tips-table").hide();
+            });
+
+            $("#received-tips-btn").click(function () {
+                $("#sent-tips-table").hide();
+                $("#received-tips-table").show();
+            });
+        });
+    </script>
+
+</body>
+
+</html>
