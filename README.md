@@ -4,6 +4,9 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/Sn1F3rt/BlogChain)](https://github.com/Sn1F3rt/BlogChain/commits/main/)
 [![GitHub issues](https://img.shields.io/github/issues/Sn1F3rt/BlogChain)](https://github.com/Sn1F3rt/BlogChain/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/Sn1F3rt/BlogChain)](https://github.com/Sn1F3rt/BlogChain/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/Sn1F3rt/BlogChain)](/)
+[![GitHub forks](https://img.shields.io/github/forks/Sn1F3rt/BlogChain)](https://github.com/Sn1F3rt/BlogChain/forks)
+[![GitHub watchers](https://img.shields.io/github/watchers/Sn1F3rt/BlogChain)](https://github.com/Sn1F3rt/BlogChain/watchers)
 
 ## Table of Contents
 
@@ -63,7 +66,7 @@ It supports Ethereum based user authentication, setting username, creating and u
 
 ## Configuration
 
-Copy the `config.example.py` file to `config.py` and:
+Copy the [`config.example.py`](config.example.py) file to `config.py` and:
 
 - update the `SECRET_KEY` variable with a 32-bit hexadecimal string.
 - update the `DB_*` variables with your database credentials.
@@ -87,4 +90,4 @@ gunicorn launcher:app
 
 [GNU General Public License v3.0](LICENSE)
 
-Copyright &copy; 2024 Sayan "Sn1F3rt" Bhattacharyya
+Copyright &copy; 2024 [Sayan "Sn1F3rt" Bhattacharyya](https://sn1f3rt.me)
