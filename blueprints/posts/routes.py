@@ -34,7 +34,7 @@ def _new():
     post_form = PostForm()
 
     if post_form.validate_on_submit():
-        post_id = secrets.token_hex(8)
+        post_id = secrets.token_hex(4)
         new_post(
             current_user.username,
             post_id,
